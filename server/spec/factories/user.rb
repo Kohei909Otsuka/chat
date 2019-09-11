@@ -3,7 +3,7 @@ FactoryBot.define do
     name { "IronMan" }
     email { "ironman@example.com" }
     hashed_password do
-     Digest::SHA256.hexdigest("password-00")
+     User.hash("password-00")
     end
   end
 end
