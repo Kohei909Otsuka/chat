@@ -2,6 +2,8 @@ class User < ApplicationRecord
   EMAIL_FORMAT = /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i
   PASSWORD_FORMAT = /\A[a-zA-Z0-9_-]{9,}\Z/
 
+  attr_accessor :session_id
+
   has_many :rooms, through: :user_rooms
   has_many :msgs
   has_many :unread_msgs
@@ -32,6 +34,31 @@ class User < ApplicationRecord
     else
       return Result.new(user.errors.full_messages, user)
     end
+  end
+
+  # NOTE: ログイン
+  def self.login(email, password)
+    hashed_password = hash(password)
+    user = User.find_by(email: email, hashed_password: hashed_password)
+    if user.nil?
+      return Result.new(["メールかパスワードが間違っています"], nil)
+    end
+
+    session_id = SecureRandom.uuid
+    user.session_id = session_id
+    r = SessionStorage.set(session_id, user.id)
+    if !r.success?
+      return Result.new(["セッション情報の保存に失敗しました"], nil)
+    end
+    return Result.new([], user)
+  end
+
+  def logout
+    r = SessionStorage.rm(session_id)
+    if !r.success?
+      return Result.new(["セッション情報の削除に失敗しました"], nil)
+    end
+    return Result.new([], nil)
   end
 
   private
