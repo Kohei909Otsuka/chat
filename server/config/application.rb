@@ -35,5 +35,6 @@ module Myapp
     config.api_only = true
 
     config.autoload_paths << Rails.root.join("lib")
+    config.middleware.use ActionDispatch::Cookies
   end
 end
