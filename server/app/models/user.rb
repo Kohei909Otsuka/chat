@@ -4,6 +4,7 @@ class User < ApplicationRecord
 
   attr_accessor :session_id
 
+  has_many :user_rooms
   has_many :rooms, through: :user_rooms
   has_many :msgs
   has_many :unread_msgs

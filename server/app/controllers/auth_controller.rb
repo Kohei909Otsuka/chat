@@ -1,4 +1,6 @@
 class AuthController < ApplicationController
+  skip_before_action :set_current_user, only: [:create]
+
   def create
     r = User.login(
       login_params[:email],

@@ -9,10 +9,7 @@ RSpec.describe "/users", type: :request do
        password: "password-00"
      }
      expect(response).to have_http_status :ok
-     json = JSON.parse(
-       response.body,
-       symbolize_names: true
-     )
+     json = parse_json(response)
      attrs = json[:data][:attributes]
      expect(attrs[:name]).to eq "kohei"
      expect(attrs[:email]).to eq "kohei@example.com"
