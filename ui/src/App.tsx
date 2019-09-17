@@ -1,24 +1,17 @@
 import React from 'react';
-import styled from 'styled-components';
-import Header from './Header';
-import Rooms from './Rooms';
-import ChatRoom from './ChatRoom';
+import { useRoutes } from 'hookrouter';
 
-const Main = styled.div`
-  height: calc(100vh - 50px);
-  display: flex;
-`;
+import Main from './Main';
+import Login from './Login';
+
+const routes = {
+  "/": () => <Main />,
+  "/login": () => <Login />,
+};
 
 const App: React.FC = () => {
-  return (
-    <div>
-      <Header />
-      <Main>
-        <Rooms />
-        <ChatRoom />
-      </Main>
-    </div>
-  );
-}
+  const routeResult = useRoutes(routes);
+  return routeResult;
+};
 
 export default App;
