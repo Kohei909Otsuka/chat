@@ -1,4 +1,10 @@
 import React, { useState } from 'react';
+import wfetch from './util/wfetch';
+
+const submit = (email:string, password:string) => {
+  wfetch.post("/login", {email, password})
+    .then(json => console.log("res json: ", json))
+};
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -17,7 +23,7 @@ const Login: React.FC = () => {
         onChange={(e) => setPassword(e.target.value)}
       />
       <button
-        onClick={() => console.log("submit", email, password)}
+        onClick={() => submit(email, password)}
       >
         Login
       </button>
